@@ -1,8 +1,10 @@
-﻿Web Development Learning Path: Pokedex Capstone Project
-This lesson plan outlines the fundamental concepts and skills needed to build a dynamic web application like the Pokedex Simulator. It progresses from basic web structure and styling to interactive JavaScript and API integration.
+﻿# Web Development Learning Path: Pokedex Capstone Project
+### This lesson plan outlines the fundamental concepts and skills needed to build a dynamic web application like the Pokedex Simulator. It progresses from basic web structure and styling to interactive JavaScript and API integration.
+---
 Goal: To equip learners with the foundational knowledge of HTML, CSS, and JavaScript necessary to build interactive front-end web applications, culminating in the creation of a Pokedex Simulator.
 Target Audience: Beginners with little to no prior web development experience.
-Module 1: HTML - The Structure of the Web
+---
+## Module 1: HTML - The Structure of the Web
 Objective: Understand how to structure web content using HTML.
 Topics:
 1. Introduction to HTML: What it is, its role, basic document structure (<!DOCTYPE>, <html>, <head>, <body>).
@@ -10,8 +12,10 @@ Topics:
 3. Attributes: href, src, alt, id, class.
 4. Semantic HTML: Understanding elements like <header>, <footer>, <nav>, <main>, <article>, <section> for better structure and accessibility.
 5. Forms: Basic input elements (<input>, <button>), labels (<label>).
-Mini-Project: Create a simple static webpage about a favorite topic (e.g., a hobby, a book) using various HTML elements and semantic tags.
-Module 2: CSS - Styling the Web
+
+### Mini-Project: Create a simple static webpage about a favorite topic (e.g., a hobby, a book) using various HTML elements and semantic tags.
+---
+## Module 2: CSS - Styling the Web
 Objective: Learn how to style HTML elements using CSS.
 Topics:
 1. Introduction to CSS: What it is, its role, how to include CSS (inline, internal, external).
@@ -19,30 +23,33 @@ Topics:
 3. The Box Model: content, padding, border, margin.
 4. Core Properties: color, background-color, font-size, font-family, width, height, text-align.
 5. Layout Basics:
-   * display property (block, inline, inline-block).
-   * Introduction to Flexbox for 1D layouts.
-   * Introduction to Grid for 2D layouts.
+   - display property (block, inline, inline-block).
+   - Introduction to Flexbox for 1D layouts.
+   - Introduction to Grid for 2D layouts.
 6. Specificity and Cascade: How browsers determine which styles apply.
-Mini-Project: Style the HTML page created in Module 1. Experiment with colors, fonts, spacing, and basic layout using Flexbox or Grid.
-Module 3: JavaScript - Making Web Pages Interactive
+
+### Mini-Project: Style the HTML page created in Module 1. Experiment with colors, fonts, spacing, and basic layout using Flexbox or Grid.
+---
+## Module 3: JavaScript - Making Web Pages Interactive
 Objective: Understand the fundamentals of JavaScript and how to manipulate web pages.
 Topics:
 1. Introduction to JavaScript: What it is, its role, how to include JS in HTML (<script> tag).
 2. Core Concepts:
-   * Variables (let, const, var).
-   * Data Types (String, Number, Boolean, Array, Object, null, undefined).
-   * Operators (Arithmetic, Assignment, Comparison, Logical).
+   - Variables (let, const, var).
+   - Data Types (String, Number, Boolean, Array, Object, null, undefined).
+   - Operators (Arithmetic, Assignment, Comparison, Logical).
 3. Control Flow: if/else statements, switch statements, for loops, while loops.
 4. Functions: Declaring and calling functions, parameters, return values.
 5. Introduction to the DOM (Document Object Model): What it is, how JS interacts with HTML.
 6. DOM Manipulation:
-   * Selecting elements (getElementById, querySelector, querySelectorAll).
-   * Changing content (textContent, innerHTML).
-   * Changing styles (element.style).
-   * Changing attributes (setAttribute, getAttribute).
+   - Selecting elements (getElementById, querySelector, querySelectorAll).
+   - Changing content (textContent, innerHTML).
+   - Changing styles (element.style).
+   - Changing attributes (setAttribute, getAttribute).
 7. Events: Handling user actions (addEventListener, common events like click, mouseover, keypress).
-Mini-Project: Add interactivity to the styled webpage. For example, create a button that changes text content or styles when clicked, or an image gallery that changes the main image on click.
-Module 4: Intermediate CSS & Responsive Design
+### Mini-Project: Add interactivity to the styled webpage. For example, create a button that changes text content or styles when clicked, or an image gallery that changes the main image on click.
+---
+## Module 4: Intermediate CSS & Responsive Design
 Objective: Learn advanced CSS techniques for layout, responsiveness, and using frameworks.
 Topics:
 1. Responsive Design Principles: Mobile-first approach, fluid layouts.
@@ -50,12 +57,14 @@ Topics:
 3. Viewport Meta Tag: <meta name="viewport" ...>.
 4. Introduction to CSS Frameworks: Concept and benefits.
 5. Tailwind CSS:
-   * Utility-first approach.
-   * Setup (using CDN).
-   * Common utility classes for layout (Flexbox, Grid), spacing (p-, m-), sizing (w-, h-), typography, colors, borders, shadows.
-   * Responsive prefixes (sm:, md:, lg:).
-Mini-Project: Rebuild the layout of the previous project using Tailwind CSS and make it fully responsive.
-Module 5: Intermediate JavaScript & APIs
+   - Utility-first approach.
+   - Setup (using CDN).
+   - Common utility classes for layout (Flexbox, Grid), spacing (p-, m-), sizing (w-, h-), typography, colors, borders, shadows.
+   - Responsive prefixes (sm:, md:, lg:).
+
+### Mini-Project: Rebuild the layout of the previous project using Tailwind CSS and make it fully responsive.
+---
+## Module 5: Intermediate JavaScript & APIs
 Objective: Learn how to handle asynchronous operations and fetch data from external sources.
 Topics:
 1. Asynchronous JavaScript: Understanding synchronous vs. asynchronous code.
@@ -66,8 +75,10 @@ Topics:
 6. Fetch API: Making GET requests to retrieve data.
 7. Working with JSON: Parsing JSON data (response.json()).
 8. Error Handling: Using try...catch with async/await.
-Mini-Project: Create a simple app that fetches data from a free public API (e.g., a random quote generator, a weather app using a simple weather API) and displays it on the page.
-Module 6: Capstone Project - Pokedex Simulator
+
+### Mini-Project: Create a simple app that fetches data from a free public API (e.g., a random quote generator, a weather app using a simple weather API) and displays it on the page.
+---
+## Module 6: Capstone Project - Pokedex Simulator
 Objective: Apply all learned concepts to build the Pokedex Simulator.
 Steps:
 1. Project Setup: Create the basic HTML structure (index.html). Link Tailwind CSS.
@@ -77,8 +88,8 @@ Steps:
 5. Display Basic Data: Populate the screen with the fetched Pokémon's name, ID, and image. Handle image loading/errors.
 6. Implement Search: Add event listener to the search button and input field (for 'Enter' key) to call fetchPokemon with the user's query.
 7. Display Complex Data:
-   * Parse and display Pokémon types using dynamically created elements and CSS classes for colors.
-   * Parse and display base stats (HP, Attack, Defense, etc.).
+   - Parse and display Pokémon types using dynamically created elements and CSS classes for colors.
+   - Parse and display base stats (HP, Attack, Defense, etc.).
 8. Implement Random Feature: Add a "Random" button and corresponding event listener that generates a random Pokémon ID and fetches its data.
 9. Add Loading & Error States: Implement visual feedback (spinner) while data is loading and display user-friendly error messages if the fetch fails or the Pokémon isn't found.
 10. Refinement: Polish the UI/UX, ensure responsiveness, add comments to the code, and test thoroughly.
