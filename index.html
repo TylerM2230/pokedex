@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pokédex Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Step 2: Basic Layout & Styling - Base body styles */
+      body {
+        font-family: "Inter", sans-serif; /* Refinement */
+        background: linear-gradient(
+          135deg,
+          #f87171 0%,
+          #fb923c 50%,
+          #facc15 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      /* Step 2: Basic Layout & Styling - Pokedex device container */
+      .pokedex-container {
+        background-color: #dc2626;
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3),
+          inset 0 0 10px rgba(0, 0, 0, 0.2);
+        border: 4px solid #444;
+        max-width: 500px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      /* Step 2: Basic Layout & Styling - Screen area */
+      .pokedex-screen {
+        background-color: #e5e7eb;
+        border: 4px solid #4b5563;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative; /* Needed for Step 9: Loader positioning */
+      }
+      /* Step 2: Basic Layout & Styling - Controls area */
+      .pokedex-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+      }
+      /* Step 8 & 6: Button container styling */
+      .button-group {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      /* Step 6: Search input styling */
+      .search-input {
+        border-radius: 0.5rem;
+        border: 2px solid #4b5563;
+        padding: 0.5rem 1rem;
+        width: 100%;
+        max-width: 300px;
+        background-color: #f3f4f6;
+        color: #1f2937;
+        text-align: center;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+      .search-input::placeholder {
+        color: #6b7280;
+      }
+      /* Step 6 & 8: Base button styling */
+      .control-button {
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 9999px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease; /* Step 10: Refinement */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+      /* Step 6: Search button specific styling */
+      .search-button {
+        background-color: #2563eb;
+      }
+      .search-button:hover {
+        background-color: #1d4ed8; /* Step 10: Refinement */
+      }
+      /* Step 8: Random button specific styling */
+      .random-button {
+        background-color: #10b981;
+      }
+      .random-button:hover {
+        background-color: #059669; /* Step 10: Refinement */
+      }
+
+      /* Step 5: Pokemon Image styling */
+      .pokemon-image {
+        max-width: 150px;
+        height: 150px;
+        object-fit: contain;
+        margin-bottom: 1rem;
+        filter: drop-shadow(
+          0 4px 6px rgba(0, 0, 0, 0.2)
+        ); /* Step 10: Refinement */
+      }
+      /* Step 7: Type badges styling */
+      .type-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 0.2rem 0.25rem;
+        color: white;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3); /* Step 10: Refinement */
+      }
+      /* Step 9: Loading Spinner styling */
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none; /* Hidden initially */
+      }
+      @keyframes spin {
+        /* Step 9: Animation for loader */
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+      /* Step 9: Error Message styling */
+      .error-message {
+        color: #ef4444;
+        font-weight: 500;
+        text-align: center;
+        display: none; /* Hidden initially */
+      }
+      /* Step 7: Stats grid styling */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 300px;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+      /* Step 7: Individual stat item styling */
+      .stat-item {
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 0.3rem 0.6rem;
+        border-radius: 0.375rem;
+        text-align: center;
+      }
+      .stat-name {
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      .stat-value {
+        font-weight: 500;
+      }
+      /* Step 7: Type Color Mapping CSS classes */
+      .type-normal {
+        background-color: #a8a878;
+      }
+      .type-fire {
+        background-color: #f08030;
+      }
+      .type-water {
+        background-color: #6890f0;
+      }
+      .type-electric {
+        background-color: #f8d030;
+      }
+      .type-grass {
+        background-color: #78c850;
+      }
+      .type-ice {
+        background-color: #98d8d8;
+      }
+      .type-fighting {
+        background-color: #c03028;
+      }
+      .type-poison {
+        background-color: #a040a0;
+      }
+      .type-ground {
+        background-color: #e0c068;
+      }
+      .type-flying {
+        background-color: #a890f0;
+      }
+      .type-psychic {
+        background-color: #f85888;
+      }
+      .type-bug {
+        background-color: #a8b820;
+      }
+      .type-rock {
+        background-color: #b8a038;
+      }
+      .type-ghost {
+        background-color: #705898;
+      }
+      .type-dragon {
+        background-color: #7038f8;
+      }
+      .type-dark {
+        background-color: #705848;
+      }
+      .type-steel {
+        background-color: #b8b8d0;
+      }
+      .type-fairy {
+        background-color: #ee99ac;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="pokedex-container">
+      <div class="pokedex-screen" id="pokedex-screen">
+        <div class="loader" id="loader"></div>
+        <div class="error-message" id="error-message"></div>
+
+        <img
+          id="pokemon-image"
+          class="pokemon-image"
+          src="https://placehold.co/150x150/e5e7eb/4b5563?text=?"
+          alt="Pokemon Image"
+          onerror="this.onerror=null; this.src='https://placehold.co/150x150/e5e7eb/4b5563?text=Error';"
+        />
+        <h2
+          id="pokemon-name"
+          class="text-2xl font-bold capitalize text-gray-800"
+        >
+          ???
+        </h2>
+        <p id="pokemon-id" class="text-sm font-medium text-gray-600 mb-2">
+          #000
+        </p>
+        <div id="pokemon-types" class="mb-3 text-center"></div>
+        <div id="pokemon-stats" class="stats-grid"></div>
+      </div>
+
+      <div class="pokedex-controls">
+        <input
+          type="text"
+          id="pokemon-search"
+          class="search-input"
+          placeholder="Enter Name or ID"
+        />
+        <div class="button-group">
+          <button id="search-button" class="control-button search-button">
+            Search
+          </button>
+          <button id="random-button" class="control-button random-button">
+            Random
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- Step 3: Core JavaScript Setup - DOM Element Selection ---
+      const searchInput = document.getElementById("pokemon-search");
+      const searchButton = document.getElementById("search-button");
+      const randomButton = document.getElementById("random-button"); // Added in Step 8
+      const pokemonImage = document.getElementById("pokemon-image");
+      const pokemonName = document.getElementById("pokemon-name");
+      const pokemonId = document.getElementById("pokemon-id");
+      const pokemonTypes = document.getElementById("pokemon-types");
+      const pokemonStats = document.getElementById("pokemon-stats");
+      const loader = document.getElementById("loader"); // Added in Step 9
+      const errorMessage = document.getElementById("error-message"); // Added in Step 9
+      const pokedexScreen = document.getElementById("pokedex-screen"); // Selected for potential future use
+
+      // --- Step 3: Core JavaScript Setup - API URL Constant ---
+      const API_URL = "https://pokeapi.co/api/v2/pokemon/";
+      // --- Step 8: Implement Random Feature - Max ID Constant ---
+      const MAX_POKEMON_ID = 1025;
+
+      // --- Step 7: Display Complex Data - Helper function for Type Colors ---
+      function getTypeClass(typeName) {
+        const typeMap = {
+          normal: "type-normal",
+          fire: "type-fire",
+          water: "type-water",
+          electric: "type-electric",
+          grass: "type-grass",
+          ice: "type-ice",
+          fighting: "type-fighting",
+          poison: "type-poison",
+          ground: "type-ground",
+          flying: "type-flying",
+          psychic: "type-psychic",
+          bug: "type-bug",
+          rock: "type-rock",
+          ghost: "type-ghost",
+          dragon: "type-dragon",
+          dark: "type-dark",
+          steel: "type-steel",
+          fairy: "type-fairy",
+        };
+        return typeMap[typeName] || "bg-gray-500";
+      }
+
+      // --- Step 5 & 7: Display Pokemon Data (Combined function) ---
+      function displayPokemon(data) {
+        // Step 9: Hide loader and error message when displaying data
+        loader.style.display = "none";
+        errorMessage.style.display = "none";
+        // Step 9: Ensure Pokemon info elements are visible
+        pokemonImage.style.display = "block";
+        pokemonName.style.display = "block";
+        pokemonId.style.display = "block";
+        pokemonTypes.style.display = "block";
+        pokemonStats.style.display = "grid"; // Use grid as defined in CSS
+
+        // Step 5: Update Image (Refined in Step 10 to prefer official artwork)
+        pokemonImage.src =
+          data.sprites?.other?.["official-artwork"]?.front_default ||
+          data.sprites?.front_default ||
+          "https://placehold.co/150x150/e5e7eb/4b5563?text=No+Image";
+        pokemonImage.alt = data.name;
+
+        // Step 5: Update Name and ID
+        pokemonName.textContent = data.name;
+        pokemonId.textContent = `#${String(data.id).padStart(3, "0")}`;
+
+        // Step 7: Update Types
+        pokemonTypes.innerHTML = ""; // Clear previous types
+        data.types.forEach((typeInfo) => {
+          const typeSpan = document.createElement("span");
+          typeSpan.textContent = typeInfo.type.name;
+          // Use helper function to get the correct CSS class for the type badge
+          typeSpan.className = `type-badge ${getTypeClass(typeInfo.type.name)}`;
+          pokemonTypes.appendChild(typeSpan);
+        });
+
+        // Step 7: Update Stats
+        pokemonStats.innerHTML = ""; // Clear previous stats
+        const statsToShow = [
+          "hp",
+          "attack",
+          "defense",
+          "special-attack",
+          "special-defense",
+          "speed",
+        ];
+        data.stats.forEach((statInfo) => {
+          if (statsToShow.includes(statInfo.stat.name)) {
+            const statItem = document.createElement("div");
+            statItem.className = "stat-item"; // Apply styling defined in CSS
+
+            const statNameSpan = document.createElement("span");
+            statNameSpan.className = "stat-name";
+            statNameSpan.textContent = statInfo.stat.name.replace("-", " "); // Improve readability
+
+            const statValueSpan = document.createElement("span");
+            statValueSpan.className = "stat-value";
+            statValueSpan.textContent = statInfo.base_stat;
+
+            statItem.appendChild(statNameSpan);
+            statItem.appendChild(document.createTextNode(": ")); // Separator
+            statItem.appendChild(statValueSpan);
+            pokemonStats.appendChild(statItem);
+          }
+        });
+      }
+
+      // --- Step 9: Loading & Error States - Function to display errors ---
+      function displayError(message) {
+        loader.style.display = "none"; // Hide loader
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block"; // Show error message
+        // Hide Pokemon info elements as they are not relevant during an error
+        pokemonImage.style.display = "none";
+        pokemonName.style.display = "none";
+        pokemonId.style.display = "none";
+        pokemonTypes.style.display = "none";
+        pokemonStats.style.display = "none";
+      }
+
+      // --- Step 4: Fetch Initial Pokémon (and subsequent fetches) ---
+      async function fetchPokemon(query) {
+        // Step 9: Show loader and hide previous error/data at the start of fetch
+        loader.style.display = "block";
+        errorMessage.style.display = "none";
+        // Step 9: Hide Pokemon info elements while loading
+        pokemonImage.style.display = "none";
+        pokemonName.style.display = "none";
+        pokemonId.style.display = "none";
+        pokemonTypes.style.display = "none";
+        pokemonStats.style.display = "none";
+
+        // Step 9: Provide immediate visual feedback that loading has started
+        pokemonName.textContent = "Loading...";
+        pokemonId.textContent = "#???";
+        pokemonTypes.innerHTML = "";
+        pokemonStats.innerHTML = "";
+        pokemonImage.src =
+          "https://placehold.co/150x150/e5e7eb/4b5563?text=..."; // Loading placeholder
+
+        // Basic validation added during Step 6/8 implementation
+        if (!query) {
+          displayError("Please enter a Pokémon name or ID.");
+          return;
+        }
+
+        // Step 4 & 8: Use try...catch for error handling during fetch
+        try {
+          // Step 4: Fetch data using the Fetch API and async/await
+          const response = await fetch(
+            `${API_URL}${String(query).toLowerCase()}`
+          );
+          // Step 9: Check for network errors (e.g., 404 Not Found)
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error(`Pokémon "${query}" not found.`);
+            } else {
+              throw new Error(`Error fetching data: ${response.statusText}`);
+            }
+          }
+          // Step 4: Parse the JSON response
+          const data = await response.json();
+          // Step 5 & 7: Display the fetched data
+          displayPokemon(data);
+        } catch (error) {
+          // Step 9: Handle any errors during the fetch process
+          console.error("Fetch error:", error); // Log error for debugging (Step 10)
+          displayError(error.message || "Could not fetch Pokémon data.");
+        }
+      }
+
+      // --- Step 8: Implement Random Feature - Function to get random Pokemon ---
+      function fetchRandomPokemon() {
+        // Generate a random ID within the known range
+        const randomId = Math.floor(Math.random() * MAX_POKEMON_ID) + 1;
+        searchInput.value = ""; // Clear search input for clarity (Step 10: Refinement)
+        // Call the main fetch function with the random ID
+        fetchPokemon(randomId);
+      }
+
+      // --- Step 6: Implement Search - Event Listeners ---
+      searchButton.addEventListener("click", () => {
+        fetchPokemon(searchInput.value.trim()); // Trim whitespace from input
+      });
+
+      searchInput.addEventListener("keypress", (event) => {
+        // Allow searching by pressing Enter key
+        if (event.key === "Enter") {
+          fetchPokemon(searchInput.value.trim());
+        }
+      });
+
+      // --- Step 8: Implement Random Feature - Event Listener ---
+      randomButton.addEventListener("click", fetchRandomPokemon);
+
+      // --- Step 4: Fetch Initial Pokémon - Load default on page load ---
+      window.addEventListener("load", () => {
+        fetchPokemon("1"); // Fetch Bulbasaur (ID 1) initially
+      });
+
+      // --- Step 10: Refinement - Code is commented, UI polished via CSS ---
+    </script>
+  </body>
+</html>
